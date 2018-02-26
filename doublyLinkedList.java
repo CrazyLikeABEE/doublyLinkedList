@@ -72,10 +72,14 @@ public class doublyLinkedList<E> {
 		}
 		int counter = 1;
 		Node current = head.next;
-		while(current.next != null) {
+		while(current.next.next != null) {
 			counter++;
 			current = current.next;
-		}	
+	//		System.out.println("CURRENT DATA "+ current.data);
+		}
+		current = current.prev;
+	//	System.out.println("TAIL DATA "+ tail.data);
+		
 		return counter;
 	}
 
@@ -126,24 +130,34 @@ public class doublyLinkedList<E> {
 	}
 
 	void remove(int index) {
+	//	System.out.println("LIST SIZE " +size());
 		if(index < 0 || index > size()) {
 			System.out.println("Not valid");
 			return;
 		}
 		if(index == 0) {
 			removeFirst();
-		}else if(index == size()){
+		}else if(index == size()-1){
 			removeLast();
 		}else {	
-			Node newNode = head;
-
-			for(int i = 0; i < index; i++) {
-				newNode = newNode.next;
+//			Node newNode = head;
+//
+//			for(int i = 0; i < index; i++) {
+//				newNode = newNode.next;
+//			}
+			Node current = head.next;
+		//	System.out.println("HEAD data " + head.data);
+			//System.out.println("TAIL data " + tail.data);
+			int counter = 0;
+			while(counter != index){
+				current = current.next;
+				counter++;
 			}
-			newNode.prev.next = newNode.next;
-			newNode.next.prev = newNode.prev;
-			newNode.next = null;
-			newNode.prev = null;
+//			System.out.println("CURRENT data " + current.data);
+			current.prev.next = current.next;
+			current.next.prev = current.prev;
+			current.next = null;
+			current.prev = null;
 		}
 	}
 
@@ -159,7 +173,7 @@ public class doublyLinkedList<E> {
 	}
 
 	public void traverseForward() {
-	//	System.out.println("DATA is Still here " + head.data);
+		//System.out.println("DATA is Still here " + head.data);
 		Node current = head.next;
 		while(current.next != null) {
 			System.out.println(current.data);
@@ -181,10 +195,13 @@ public class doublyLinkedList<E> {
 	public static void main(String[] args) {
 		
 		doublyLinkedList <String> list = new doublyLinkedList<String>();
-		System.out.println("Add first:");
+		System.out.println("First, add first:");
 		list.addFirst("red");
 		list.addFirst("grape");
 		list.addFirst("yellow");
+		list.traverseForward();
+		
+		System.out.println("Added at index 1:");
 		list.add("blue", 1);
 		list.traverseForward();
 		
@@ -200,34 +217,33 @@ public class doublyLinkedList<E> {
 		//System.out.println("\nAdd last backwards");
 		//list.traverseBackward();
 		
-		System.out.println("\nRemove first:");
+		System.out.println("\nRemoved first:");
 		list.removeFirst();
 		list.traverseForward();
 		
 		//System.out.println("\nRemove first backwards");
 		//list.traverseBackward();
 		
-		System.out.println("\nRemove last:");
+		System.out.println("\nRemoved last:");
 		list.removeLast();
 		list.traverseForward();
 		
 		//System.out.println("\nRemove last backwards");
 		//list.traverseBackward();
 			
-		System.out.println("\nRemove at index:");
-		list.remove(2);
+		System.out.println("\nRemoved at index 1:");
+		list.remove(1);
 		list.traverseForward();
 
-		System.out.println("\nRemove at index backwards:");
+		System.out.println("\nRemoved at index 0, backwards:");
+		list.remove(0);
 		list.traverseBackward();
 		
-		System.out.println("\nChange value at index:");
+		System.out.println("\nChange value, to gold, at index 2:");
 		list.change("gold", 2);
 		list.traverseForward();
 		
-		System.out.println("\nList backwards:");
+		System.out.println("\nFinal list backwards:");
 		list.traverseBackward();
-		
-
 	}
 }
